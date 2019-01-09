@@ -1,34 +1,20 @@
+const Reader = require('./services/reader');
 const csvFilePath = './NetflixViewingHistory.csv';
-const csv = require('csvtojson');
+const _ = require('lodash');
 
-class Reader {
-  constructor() {
-    this.shows = [];
-  }
+const reader = new Reader(csvFilePath);
 
-  async Read() {
-    const history = await csv().fromFile(csvFilePath);
+(async () => {
+  try {
+    await reader.Read();
 
-    history.map(data => {
-      const keys = Object.keys(data);
-
-      const splits = data[keys[0]].split(':');
-      const title = splits[0];
-      const season = splits[1];
-      const episodeName = splits[2];
-
-      this.shows.push({
-        title,
-        date: data[keys[1]],
-        season,
-        episodeName,
-      });
+    const catalogue = reader.GetCatalogue();
+    let sorted = _.sortBy(catalogue, (video) => {
+      return video.WatchCount();
     });
 
-    console.log(this.shows);
+    console.log(sorted[0], sorted[sorted.length - 1]);
+  } catch(e) {
+    console.error(e);
   }
-
-}
-
-var reader = new Reader();
-reader.Read();
+})();
