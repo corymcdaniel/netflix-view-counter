@@ -18,7 +18,7 @@ module.exports = function Deconstruct(column) {
   const episodeName = _.get(data, '[2]', '').trim();
 
   return {
-    fullTitle: data[0],
+    fullTitle: column[keys[0]],
     type,
     title,
     season,

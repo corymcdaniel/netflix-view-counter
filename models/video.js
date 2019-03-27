@@ -1,5 +1,5 @@
 class Video {
-  constructor({fullTitle, title, season, episodeName, type}) {
+  constructor({fullTitle}) {
     this.type = type;
     this.fullTitle = fullTitle;
     this.title = title;
